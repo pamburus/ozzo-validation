@@ -60,6 +60,11 @@ func Validate(value interface{}, rules ...Rule) error {
 		return nil
 	}
 
+	if rv.CanAddr() {
+		if v, ok := rv.Addr().Interface().(Validatable); ok {
+			return v.Validate()
+		}
+	}
 	if v, ok := value.(Validatable); ok {
 		return v.Validate()
 	}
